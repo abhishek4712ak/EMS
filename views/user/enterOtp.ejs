@@ -1,0 +1,94 @@
+<%- include('../superAdmin/base_styles.ejs') %>
+
+<style>
+  body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 30px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #ffffff;
+  }
+
+  .form-group label {
+    font-weight: 600;
+    color: #ccc;
+  }
+
+  .form-control {
+    background-color: #2a2a2a;
+    border: 1px solid #444;
+    color: #fff;
+    padding: 10px 12px;
+    border-radius: 8px;
+    transition: border-color 0.3s;
+  }
+
+  .form-control:focus {
+    border-color: #00bcd4;
+    outline: none;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #00bcd4, #009688);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .btn-primary:hover {
+    background: linear-gradient(90deg, #009688, #00bcd4);
+  }
+
+  .alert {
+    background-color: #ff4d4f;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 480px) {
+    .container {
+      margin: 50px 15px;
+      padding: 20px;
+    }
+  }
+</style>
+
+<div class="container">
+  <h2>Verify OTP</h2>
+  
+  <% if (error) { %>
+    <div class="alert"><%= error %></div>
+  <% } %>
+  
+  <form action="/user/verify-otp" method="POST">
+    <input type="hidden" name="email" value="<%= email %>" />
+    
+    <div class="form-group">
+      <label for="otp">Enter OTP</label>
+      <input type="text" class="form-control" id="otp" name="otp" placeholder="6-digit code" required />
+    </div>
+    
+    <button type="submit" class="btn-primary">Verify</button>
+  </form>
+</div>

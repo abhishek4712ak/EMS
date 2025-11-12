@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./userHeader.ejs') %>
+<%- include('../superAdmin/base_styles.ejs') %>
+
+<head>
+  <title>Event Participation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/04fd96b6f4.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* Global Styles */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0d152e, #1e293b, #030712);
+      color: #e2e8f0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Canvas for floating particles */
+    #particle-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    main {
+      display: flex;
+      justify-content: center;
+      padding: 6rem 1rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .container {
+      display: flex;
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    /* Left & Right Columns */
+    .left-column, .right-column {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+
+    h1, h2, h3 {
+      margin: 0 0 1rem 0;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.6rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #06b6d4;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .subtext {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    .event-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .event-card {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 1.5rem;
+      border-radius: 15px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Floating glow effect on cards */
+    .event-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(6,182,212,0.2), transparent 70%);
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .event-card:hover::before {
+      opacity: 1;
+    }
+
+    .event-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .event-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .event-card p {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      margin-bottom: 0.6rem;
+    }
+
+    .participate-btn, .participated {
+      border: none;
+      padding: 0.55rem 1.2rem;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .participate-btn {
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .participate-btn:hover {
+      transform: scale(1.05) rotate(-1deg);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    .participated {
+      background: #10b981;
+      color: #fff;
+      cursor: not-allowed;
+    }
+
+    .event-details {
+      margin-top: 1rem;
+      padding: 0.8rem;
+      background: rgba(255,255,255,0.06);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+      display: none;
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .participated-card {
+      cursor: pointer;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .container {
+        flex-direction: column;
+      }
+      .left-column, .right-column {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .participate-btn, .participated {
+        width: 100%;
+        text-align: center;
+      }
+      input[type="text"] {
+        width: 100% !important;
+      }
+    }
+  </style>
+
+  <script>
+    function toggleDetails(id) {
+      const details = document.getElementById(id);
+      if (details.style.display === 'none' || details.style.display === '') {
+        details.style.display = 'block';
+      } else {
+        details.style.display = 'none';
+      }
+    }
+
+    // Floating Particles
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.createElement('canvas');
+      canvas.id = 'particle-canvas';
+      document.body.appendChild(canvas);
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const particles = [];
+      const particleCount = 80;
+
+      function random(min, max) {
+        return Math.random() * (max - min) + min;
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: random(0, width),
+          y: random(0, height),
+          radius: random(1, 4),
+          speedX: random(-0.5, 0.5),
+          speedY: random(-0.7, 0.7),
+          alpha: random(0.1, 0.5)
+        });
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let p of particles) {
+          p.x += p.speedX;
+          p.y += p.speedY;
+
+          if (p.x < 0 || p.x > width) p.speedX *= -1;
+          if (p.y < 0 || p.y > height) p.speedY *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(6,182,212,${p.alpha})`;
+          ctx.fill();
+        }
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <main>
+    <div class="container">
+      <!-- Left Column: Participate -->
+      <div class="left-column">
+        <h1>Participate Events</h1>
+
+        <h2>Individual Events</h2>
+        <div class="event-list">
+          <% individualEvents.forEach(event => { %>
+            <div class="event-card">
+              <h3><%= event.event %></h3>
+              <p><strong>Venue:</strong> <%= event.venue %></p>
+              <p><strong>Time:</strong> <%= event.time %></p>
+              <% if (participatedEvents.includes(event.event)) { %>
+                <button class="participated">Participated</button>
+              <% } else { %>
+                <form action="/user/participate/individual" method="POST">
+                  <input type="hidden" name="eventName" value="<%= event.event %>">
+                  <button type="submit" class="participate-btn">Participate</button>
+                </form>
+              <% } %>
+            </div>
+          <% }); %>
+        </div>
+
+        <h2 style="margin-top: 2rem;">Team Events</h2>
+        <div class="event-list">
+          <% teamEvents.forEach(event => { %>
+            <div class="event-card">
+              <h3><%= event.event %></h3>
+              <p><strong>Venue:</strong> <%= event.venue %></p>
+              <p><strong>Time:</strong> <%= event.time %></p>
+              <form action="/user/participate/team" method="POST">
+                <input type="hidden" name="eventName" value="<%= event.event %>">
+                <input type="text" name="teamMembers" placeholder="Team member PIDs (comma separated)" style="margin-top: 5px; padding: 6px; border-radius: 8px; width: 100%; border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color:#fff;">
+                <button type="submit" class="participate-btn" style="margin-top: 8px;">Participate (Team)</button>
+              </form>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+
+      <!-- Right Column: Participated -->
+      <div class="right-column">
+        <h1>Your Participated Events</h1>
+
+        <h2>Individual Events</h2>
+        <div class="event-list">
+          <% participatedIndividualEvents.forEach(event => { %>
+            <div class="event-card participated-card" onclick="toggleDetails('individual-<%= event.event.replace(/\s+/g, '-') %>')">
+              <h3><%= event.event %></h3>
+              <div id="individual-<%= event.event.replace(/\s+/g, '-') %>" class="event-details">
+                <p><strong>Venue:</strong> <%= event.venue %></p>
+                <p><strong>Time:</strong> <%= event.time %></p>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+
+        <h2 style="margin-top:2rem;">Team Events</h2>
+        <div class="event-list">
+          <% participatedTeamEvents.forEach(event => { %>
+            <div class="event-card participated-card" onclick="toggleDetails('team-<%= event.event.replace(/\s+/g, '-') %>')">
+              <h3><%= event.event %></h3>
+              <div id="team-<%= event.event.replace(/\s+/g, '-') %>" class="event-details">
+                <p><strong>Venue:</strong> <%= event.venue %></p>
+                <p><strong>Time:</strong> <%= event.time %></p>
+                <p><strong>Team ID:</strong> <%= event.tid %></p>
+                <p><strong>Team Members:</strong> <%= event.teamMembers.join(', ') %></p>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+
+      </div>
+    </div>
+  </main>
+</body>
+</html>

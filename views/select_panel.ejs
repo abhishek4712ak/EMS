@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Select Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(120deg, #071229 60%, #06b6d4 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .panel-container {
+      background: rgba(7,18,41,0.92);
+      border-radius: 24px;
+      box-shadow: 0 8px 32px rgba(6,182,212,0.18);
+      padding: 3rem 2rem;
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+    h1 {
+      color: #06b6d4;
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .panel-card {
+      background: linear-gradient(135deg, #111827 70%, #06b6d4 100%);
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(6,182,212,0.10);
+      padding: 2rem 1rem;
+      color: #e6eef6;
+      font-weight: 600;
+      font-size: 1.15rem;
+      cursor: pointer;
+      transition: transform 0.18s, box-shadow 0.18s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .panel-card:hover {
+      transform: translateY(-6px) scale(1.04);
+      box-shadow: 0 8px 24px #06b6d4a0;
+      background: linear-gradient(135deg, #06b6d4 70%, #111827 100%);
+      color: #fff;
+    }
+    .panel-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #7c3aed;
+    }
+    .panel-card.admin .panel-icon { color: #06b6d4; }
+    .panel-card.superadmin .panel-icon { color: #eab308; }
+    .panel-card.superjc .panel-icon { color: #ef4444; }
+    .panel-card.jc .panel-icon { color: #22c55e; }
+    @media (max-width: 600px) {
+      .panel-container {
+        padding: 1.5rem 0.5rem;
+      }
+      .panel-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+    }
+  </style>
+  <script src="https://kit.fontawesome.com/04fd96b6f4.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <div class="panel-container">
+    <h1>Select Panel to Login</h1>
+    <div class="panel-grid">
+      <a href="/superadmin/login" class="panel-card superadmin">
+        <span class="panel-icon"><i class="fas fa-user-shield"></i></span>
+        SuperAdmin
+      </a>
+      <a href="/superjc/login" class="panel-card superjc">
+        <span class="panel-icon"><i class="fas fa-user-secret"></i></span>
+        SuperJC
+      </a>
+      <a href="/jc/login" class="panel-card jc">
+        <span class="panel-icon"><i class="fas fa-user-graduate"></i></span>
+        JC
+      </a>
+      <a href="/admin/login" class="panel-card admin">
+        <span class="panel-icon"><i class="fas fa-user-cog"></i></span>
+        Admin
+      </a>
+    </div>
+  </div>
+</body>
+</html>

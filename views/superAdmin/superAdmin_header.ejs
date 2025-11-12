@@ -1,0 +1,196 @@
+<% include('./base_styles.ejs') %>
+
+<nav class="sa-navbar">
+  <div class="sa-navbar__inner">
+    
+    <div class="sa-brand">
+      <i class="fas fa-user-shield"></i>
+      <span>SuperAdmin</span>
+    </div>
+
+    <button class="sa-toggle" aria-label="Toggle navigation" onclick="toggleSaNav()">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="sa-links" id="sa-links">
+      <a href="/superadmin/dashboard" class="sa-link"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+      <a href="/superadmin/manage-admin" class="sa-link"><i class="fas fa-user-shield"></i> Manage Admin</a>
+      <a href="/superadmin/manage-superjc" class="sa-link"><i class="fas fa-users"></i> Manage SuperJC</a>
+      <a href="/superadmin/addEvents" class="sa-link"><i class="far fa-calendar-alt"></i> Manage Events</a>
+      <a href="/superadmin/halt" class="sa-link sa-halt"><i class="fa-solid fa-stop-circle"></i> Halt</a>
+      <a href="/superadmin/logout" class="sa-link logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+  </div>
+</nav>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+  :root{
+    --bg-1: #0f1724;
+    --bg-2: #111827;
+    --accent-1: #06b6d4;
+    --accent-2: #7c3aed;
+    --text-muted: #9ca3af;
+    --text-light: #f1f5f9;
+  }
+
+  /* NAVBAR */
+  .sa-navbar{
+    width:100%;
+    background:rgba(15,23,36,0.86);
+    backdrop-filter: blur(14px) saturate(180%);
+    color:#fff;
+    position:sticky;
+    top:0;
+    z-index:1200;
+    border-bottom:1px solid rgba(255,255,255,0.05);
+    animation: fadeDown .4s ease;
+    font-family:"Inter", sans-serif;
+  }
+
+  @keyframes fadeDown {
+    from { opacity:0; transform:translateY(-8px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  .sa-navbar__inner{
+    max-width:1300px;
+    margin:0 auto;
+    padding:1rem 1.4rem;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:1rem;
+  }
+
+  /* BRAND */
+  .sa-brand{
+    display:flex;
+    gap:.6rem;
+    align-items:center;
+    font-weight:700;
+    font-size:1.3rem;
+    background:linear-gradient(90deg,var(--accent-2),var(--accent-1));
+    padding:.45rem .9rem;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.4);
+  }
+  .sa-brand i { font-size:1.25rem; }
+
+  /* LINKS */
+  .sa-links{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    transition:.3s ease;
+  }
+
+  .sa-link{
+    color:var(--text-muted);
+    padding:.55rem .95rem;
+    text-decoration:none;
+    border-radius:10px;
+    font-weight:600;
+    display:flex;
+    gap:.55rem;
+    align-items:center;
+    transition:.25s ease;
+    position:relative;
+  }
+
+  .sa-link i{
+    color:var(--accent-1);
+    transition:.25s;
+  }
+
+  .sa-link:hover{
+    background:rgba(255,255,255,0.08);
+    color:var(--text-light);
+    transform:translateY(-2px);
+  }
+
+  .sa-link:hover i{
+    color:var(--accent-2);
+  }
+
+  /* Halt button */
+  .sa-halt{
+    background:linear-gradient(90deg,#b91c1c,#7f1d1d);
+    color:#fff!important;
+  }
+
+  .sa-halt i{
+    color:#fff;
+  }
+
+  /* Logout */
+  .logout{
+    color:#ef4444;
+  }
+  .logout:hover{
+    background:rgba(255,0,0,0.15);
+    color:#fff;
+  }
+
+  /* Mobile toggle */
+  .sa-toggle{
+    display:none;
+    background:transparent;
+    border:none;
+    color:#fff;
+    font-size:1.4rem;
+    cursor:pointer;
+    transition:.25s;
+  }
+  .sa-toggle:hover{
+    transform:scale(1.1);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width:900px){
+    .sa-navbar__inner{
+      flex-direction:column;
+      align-items:flex-start;
+      gap:.5rem;
+    }
+
+    .sa-toggle{
+      display:block;
+      align-self:flex-end;
+      margin-top:-2.5rem;
+    }
+
+    .sa-links{
+      width:100%;
+      flex-direction:column;
+      display:none;
+      padding-top:.5rem;
+      border-top:1px solid rgba(255,255,255,0.08);
+      animation: fadeIn .3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(-5px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .sa-links.active{
+      display:flex;
+    }
+
+    .sa-link{
+      width:100%;
+      justify-content:flex-start;
+      padding:.8rem 1rem;
+      border-radius:8px;
+    }
+  }
+</style>
+
+<script>
+  function toggleSaNav(){
+    document.getElementById('sa-links').classList.toggle('active');
+  }
+</script>

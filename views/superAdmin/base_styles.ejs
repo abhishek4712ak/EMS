@@ -1,0 +1,118 @@
+<!-- Base styles and fonts for SuperAdmin pages -->
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://kit.fontawesome.com/04fd96b6f4.js" crossorigin="anonymous"></script>
+
+<style>
+  :root {
+    /* Colors */
+    --bg-900: #040612;
+    --bg-800: #071229;
+    --panel: rgba(255,255,255,0.03);
+    --muted: #9aa8b2;
+    --text-light: #e6eef6;
+    --accent-1: #06b6d4;
+    --accent-2: #7c3aed;
+    --danger: #ff6b6b;
+    --success: #16a34a;
+    --glass: rgba(255,255,255,0.06);
+    --glass2: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.12);
+  }
+
+  /* Base */
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(180deg, var(--bg-900) 0%, var(--bg-800) 100%);
+    color: var(--text-light);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Container */
+  .sa-container {
+    max-width: 1200px;
+    margin: 2.5rem auto;
+    padding: 0 1rem;
+  }
+
+  /* Panels / Cards */
+  .panel {
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding: 1.5rem;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    backdrop-filter: blur(12px);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .panel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 50px rgba(0,0,0,0.55);
+  }
+
+  /* Links & Buttons */
+  a {
+    color: var(--accent-1);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  a:hover {
+    color: var(--accent-2);
+  }
+
+  button {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: 10px;
+    border: none;
+    padding: 0.65rem 1.2rem;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(6,182,212,0.3);
+  }
+
+  /* Forms */
+  input, select, textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--glass2);
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent-1);
+    box-shadow: 0 0 12px rgba(6,182,212,0.25);
+    outline: none;
+  }
+
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0 0 1rem;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: var(--muted);
+  }
+
+  /* Responsive */
+  @media(max-width: 768px) {
+    .sa-container { padding: 0 0.8rem; }
+    .panel { padding: 1rem; }
+    input, select, textarea, button { font-size: 0.95rem; }
+  }
+</style>

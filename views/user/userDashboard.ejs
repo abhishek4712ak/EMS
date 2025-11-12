@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./userHeader.ejs') %>
+<%- include('../superAdmin/base_styles.ejs') %>
+
+<head>
+  <title>User Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/04fd96b6f4.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* Background */
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", sans-serif;
+      background: radial-gradient(circle at top, #0d152e 0%, #030712 65%);
+      color: #e2e8f0;
+    }
+
+    /* Main Layout */
+    main {
+      display: flex;
+      justify-content: center;
+      padding: 5.5rem 1rem 3rem 1rem;
+    }
+
+    /* Dashboard Card */
+    .container {
+      width: 100%;
+      max-width: 780px;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 2.8rem 2rem;
+      border-radius: 18px;
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+      animation: fadeIn 1s ease;
+    }
+
+    /* Heading */
+    h1 {
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #06b6d4, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+
+    .subtext {
+      text-align: center;
+      color: #94a3b8;
+      font-size: 1.05rem;
+      margin-bottom: 2.2rem;
+    }
+
+    /* Info Card Group */
+    .info-group {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1.7rem;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.25);
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .info-item {
+      margin-bottom: 1.7rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 0.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: 0.3s ease;
+    }
+
+    .info-item:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .info-item:hover {
+      transform: translateX(5px);
+      border-bottom-color: #06b6d4;
+    }
+
+    .info-item label {
+      font-size: 1rem;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .info-item span {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* Verified Status */
+    .verified {
+      color: #10b981;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .verified i {
+      font-size: 1.2rem;
+    }
+
+    .not-verified {
+      color: #ef4444;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .not-verified i {
+      font-size: 1.2rem;
+    }
+
+    /* Alert Box */
+    .alert-box {
+      margin-top: 1.5rem;
+      padding: 1.2rem;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(239, 68, 68, 0.1));
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      animation: fadeInUp 0.8s ease;
+    }
+
+    .alert-box i {
+      color: #f59e0b;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .alert-box p {
+      margin: 0;
+      color: #fbbf24;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 2rem 1.3rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main>
+    <div class="container">
+
+      <h1>User Dashboard</h1>
+      <p class="subtext">Here are your account details</p>
+
+      <div class="info-group">
+
+        <div class="info-item">
+          <label>Email:</label>
+          <span><%= email %></span>
+        </div>
+
+        <div class="info-item">
+          <label>PID:</label>
+          <span><%= pid %></span>
+        </div>
+
+        <div class="info-item">
+          <label>Status:</label>
+
+          <% if (isVerified) { %>
+            <span class="verified">
+              <i class="fas fa-check-circle"></i> Verified
+            </span>
+          <% } else { %>
+            <span class="not-verified">
+              <i class="fas fa-times-circle"></i> Not Verified
+            </span>
+          <% } %>
+
+        </div>
+
+        <% if (!isVerified) { %>
+        <div class="alert-box">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>Complete your profile and wait for admin approval to participate.
+            Once verified, you'll gain full access to all features.
+          </p>
+        </div>
+        <% } %>
+
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

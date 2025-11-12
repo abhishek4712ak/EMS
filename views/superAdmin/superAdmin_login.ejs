@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SuperAdmin Login</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/04fd96b6f4.js" crossorigin="anonymous"></script>
+
+    <!-- ✨ ADVANCED UI + ANIMATIONS CSS -->
+    <style>
+        :root {
+            --bg1: #020617;
+            --bg2: #0b1226;
+            --glass: rgba(255,255,255,0.06);
+            --border: rgba(255,255,255,0.12);
+            --accent: #0ea5e9;
+            --accent-2: #8b5cf6;
+            --muted: #94a3b8;
+            --error-bg: #3f1d1d;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top, var(--bg2), var(--bg1) 70%);
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        /* PAGE WRAP */
+        .login-wrap {
+            width: 100%;
+            max-width: 1050px;
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 2.5rem;
+            align-items: center;
+            animation: fadeIn 0.9s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* HERO SECTION */
+        .hero {
+            padding: 2.8rem;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border: 1px solid var(--border);
+            backdrop-filter: blur(14px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+            transition: 0.4s ease;
+        }
+
+        .hero:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 70px rgba(0,0,0,0.75);
+        }
+
+        .brand { 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+            font-weight: 800; 
+            font-size: 1.4rem;
+        }
+
+        .brand i { 
+            font-size: 2.4rem; 
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero h1 {
+            margin: 1rem 0 0;
+            font-size: 2.3rem;
+            font-weight: 900;
+        }
+
+        .hero p {
+            margin-top: .8rem;
+            max-width: 50ch;
+            color: var(--muted);
+            font-size: 1.1rem;
+            line-height: 1.6rem;
+        }
+
+        /* LOGIN CARD */
+        .card {
+            background: rgba(15, 23, 36, 0.75);
+            padding: 2.3rem;
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 25px 55px rgba(0,0,0,0.7);
+            transition: 0.45s ease;
+            position: relative;
+        }
+
+        /* Shake on error */
+        .card.error-shake { animation: shake 0.4s ease; }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            50% { transform: translateX(8px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .card h2 {
+            font-size: 1.6rem;
+            margin-bottom: 1.4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* INPUT GROUP */
+        .form-group {
+            position: relative;
+            margin-bottom: 1.6rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 1rem 1.2rem 1rem 1rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.06);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        /* Floating label */
+        label {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--muted);
+            transition: 0.3s ease;
+            font-weight: 500;
+        }
+
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -6px;
+            left: 10px;
+            font-size: 0.75rem;
+            background: var(--bg2);
+            padding: 0 4px;
+            border-radius: 5px;
+            color: var(--accent);
+        }
+
+        /* PASSWORD TOGGLE */
+        .toggle-pass {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            color: var(--muted);
+            cursor: pointer;
+            transition: .25s;
+        }
+
+        .toggle-pass:hover { color: var(--accent); }
+
+        /* BUTTON */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            font-weight: 900;
+            font-size: 1rem;
+            color: #f0f9ff;
+            cursor: pointer;
+            transition: 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 25px rgba(14,165,233,0.7);
+        }
+
+        /* Loading Spinner */
+        .btn.loading {
+            pointer-events: none;
+            opacity: 0.85;
+        }
+
+        .btn.loading::after {
+            content: "";
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            border-top-color: transparent;
+            position: absolute;
+            top: calc(50% - 11px);
+            right: calc(50% - 11px);
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* ERROR BOX */
+        .error {
+            background: var(--error-bg);
+            padding: .8rem 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255,0,0,0.25);
+            color: #ffcdcd;
+            margin-bottom: 1rem;
+            font-size: .95rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .login-wrap {
+                grid-template-columns: 1fr;
+                max-width: 520px;
+                gap: 1.8rem;
+            }
+            .hero { text-align: center; }
+            .hero p { margin: auto; }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="login-wrap">
+
+        <!-- LEFT HERO -->
+        <section class="hero">
+            <div class="brand">
+                <i class="fas fa-user-shield"></i>
+                <span>EMS — SuperAdmin</span>
+            </div>
+
+            <h1>Welcome back</h1>
+            <p>Sign in to manage admins, superJC accounts, events and system settings. Secure access with JWT and role-based controls.</p>
+        </section>
+
+        <!-- RIGHT LOGIN CARD -->
+        <aside class="card<%= (typeof error !== 'undefined' && error) ? ' error-shake' : '' %>" id="card">
+            <h2>SuperAdmin Login</h2>
+
+         <% if (error && error.length > 0) { %>
+<div class="error"><%= error %></div>
+<% } %>
+            <form action="/superadmin/login" method="POST">
+                
+                <!-- Email -->
+                <div class="form-group">
+                    <input id="email" name="email" type="email" required placeholder=" " />
+                    <label for="email">Email</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <input id="password" name="password" type="password" required placeholder=" " />
+                    <label for="password">Password</label>
+                </div>
+
+                <button class="btn" type="submit"><i class="fas fa-sign-in-alt"></i> Sign in</button>
+            </form>
+        </aside>
+    </main>
+
+    <!-- ⭐ ADVANCED LOGIN JS -->
+    <script>
+        // Password Toggle Button
+        const passwordField = document.getElementById("password");
+        const passParent = passwordField.parentNode;
+        const eye = document.createElement("i");
+        eye.className = "fas fa-eye toggle-pass";
+        passParent.appendChild(eye);
+
+        eye.addEventListener("click", () => {
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eye.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                eye.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        });
+
+        // Loading Button Animation
+        const form = document.querySelector("form");
+        const btn = document.querySelector(".btn");
+        const card = document.getElementById("card");
+
+        form.addEventListener("submit", () => {
+            btn.classList.add("loading");
+        });
+
+        // Shake card if error exists (handled server-side by adding "error-shake" class to the card element)
+    </script>
+
+</body>
+</html>
