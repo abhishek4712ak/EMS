@@ -15,7 +15,7 @@ export const transporter = nodemailer.createTransport({
 
 export async function sendOtpMail(email, otp) {
     const mailOptions = {
-        from: "abhishek471ak1@gmail.com" ,
+        from:  "abhishek4712ak1@gmail.com" || "abhishek4712ak1@gmail.com" ,
         to: email,
         subject: 'Your OTP for EMS Verification',
         html: `
