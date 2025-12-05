@@ -9,7 +9,7 @@ export const transporter = nodemailer.createTransport({
     secure: false, // use TLS
     auth: {
         user: "9c8102001@smtp-brevo.com" ,
-        pass: "bskzeNzrTyYKg2n" ,
+        pass: "xsmtpsib-1ed286c8e50795d9e4c36150da96c80d71d97158bbd7a6878adbc395e684e8e9-yB1lppZrHP8Iquyh" ,
     }
 });
 
