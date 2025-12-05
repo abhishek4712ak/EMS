@@ -8,14 +8,14 @@ export const transporter = nodemailer.createTransport({
     port: 587,
     secure: false, // use TLS
     auth: {
-        user: process.env.BREVO_USER ,
-        pass: process.env.BREVO_PASS ,
+        user: "" ,
+        pass: "" ,
     }
 });
 
 export async function sendOtpMail(email, otp) {
     const mailOptions = {
-        from: process.env.BREVO_FROM ,
+        from: "abhishek471ak1@gmail.com" ,
         to: email,
         subject: 'Your OTP for EMS Verification',
         html: `
