@@ -8,8 +8,8 @@ export const transporter = nodemailer.createTransport({
     port: 587,
     secure: false, // use TLS
     auth: {
-        user: "" ,
-        pass: "" ,
+        user: "9c8102001@smtp-brevo.com" ,
+        pass: "bskzeNzrTyYKg2n" ,
     }
 });
 
