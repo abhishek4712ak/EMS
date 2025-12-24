@@ -1,0 +1,89 @@
+
+<style>
+  /* Developer button styles moved to shared partial */
+</style>
+
+<!-- Bootstrap 5 CDN -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Font Awesome (icons) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .navbar-dark-custom {
+    background: #181f2a !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    border-bottom: 3px solid #232a3a;
+    min-height: 90px;
+  }
+  .navbar-brand {
+    font-size: 2.1rem !important;
+    letter-spacing: 2px;
+    color: #fff !important;
+    font-weight: 900 !important;
+    padding-right: 1.5rem;
+  }
+  .navbar-nav .nav-link {
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding: 0.8rem 1.3rem !important;
+    margin: 0 0.2rem;
+    border-radius: 12px;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+    color: #e0e6ed !important;
+  }
+  .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+    background: #232a3a;
+    color: #38bdf8 !important;
+    transform: scale(1.08);
+    text-shadow: 0 2px 8px #181f2a;
+  }
+  .navbar-toggler {
+    font-size: 2rem;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    background: rgba(0,0,0,0.15);
+  }
+  @media (max-width: 900px) {
+    .navbar-nav .nav-link {
+      font-size: 1.1rem;
+      padding: 0.7rem 1rem !important;
+    }
+    .navbar-brand {
+      font-size: 1.5rem !important;
+    }
+  }
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-dark-custom sticky-top shadow">
+  <div class="container-fluid">
+    <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="#">
+      <i class="fas fa-user-cog"></i>
+      Admin Panel
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="adminNavbar">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/admin_dashboard"><i class="fas fa-tachometer-alt me-1"></i>Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin/students/all"><i class="fas fa-users me-1"></i>Show Students</a>
+        </li>
+        <li class="nav-item">
+          <form class="d-flex" action="/admin/students/search" method="GET">
+            <input class="form-control me-2" type="search" name="query" placeholder="Search by PID / Reg no" aria-label="Search" required>
+            <button class="btn btn-info text-white" type="submit"><i class="fas fa-search"></i></button>
+          </form>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-danger fw-bold" href="/admin/logout"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<%- include('../partials/dev_button.ejs') %>
+
+

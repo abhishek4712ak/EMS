@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>JC Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #071229 60%, #06b6d4 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    .navbar-dark-custom {
+      background: #181f2a !important;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+      border-bottom: 3px solid #232a3a;
+      min-height: 90px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      color: #fff;
+    }
+    .navbar-brand {
+      font-size: 2.1rem !important;
+      letter-spacing: 2px;
+      color: #fff !important;
+      font-weight: 900 !important;
+      padding-right: 1.5rem;
+      text-decoration: none;
+    }
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+      list-style: none;
+      padding-left: 0;
+    }
+    .navbar-nav .nav-link {
+      font-size: 1.25rem;
+      font-weight: 700;
+      padding: 0.8rem 1.3rem !important;
+      margin: 0 0.2rem;
+      border-radius: 12px;
+      transition: background 0.3s, color 0.3s, transform 0.2s;
+      color: #e0e6ed !important;
+      text-decoration: none;
+      display: block;
+    }
+    .navbar-nav .nav-link:hover, .navbar-nav .nav-link.active {
+      background: #232a3a;
+      color: #38bdf8 !important;
+      transform: scale(1.08);
+      text-shadow: 0 2px 8px #181f2a;
+    }
+    @media (max-width: 900px) {
+      .navbar-nav .nav-link {
+        font-size: 1.1rem;
+        padding: 0.7rem 1rem !important;
+      }
+      .navbar-brand {
+        font-size: 1.5rem !important;
+      }
+    }
+    .container {
+      max-width: 600px;
+      margin: 3rem auto;
+      background: rgba(7,18,41,0.85);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(6,182,212,0.12);
+      padding: 2rem;
+      color: #e6eef6;
+      text-align: center;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+      color: #06b6d4;
+      letter-spacing: 1px;
+    }
+    p {
+      font-size: 1.1rem;
+      color: #e6eef6;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 700px) {
+      .container {
+        margin: 1rem;
+        padding: 1rem;
+      }
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div>
+      <a href="/jc/dashboard">JC Dashboard</a>
+    </div>
+    <div>
+      <a href="/jc/logout">Logout</a>
+    </div>
+  </nav>
+  <div class="container">
+    <h1>Welcome, <%= username %>!</h1>
+    <p>Your dashboard is now responsive and visually enhanced for a better experience.</p>
+    <img src="https://img.icons8.com/color/96/000000/student-center.png" alt="JC Icon" style="margin-bottom:1rem;" />
+    <div style="margin-top:2rem;">
+      <a href="/jc/events" style="background:#06b6d4;color:#fff;padding:0.7rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:600;box-shadow:0 2px 8px rgba(6,182,212,0.15);transition:background 0.2s;">View Events</a>
+    </div>
+  </div>
+
+  <!-- Contact Developer Floating Icon -->
+  <%- include('../partials/dev_button.ejs') %>
+</body>
+</html>

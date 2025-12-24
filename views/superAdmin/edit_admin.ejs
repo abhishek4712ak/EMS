@@ -1,0 +1,109 @@
+<%- include('./superAdmin_header.ejs') %>
+
+
+<style>
+  :root {
+    --accent: #06b6d4;
+    --accent2: #7c3aed;
+    --danger: #ff5f5f;
+    --muted: #9aa8b2;
+    --glass: rgba(255,255,255,0.06);
+    --glass2: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.12);
+    --text-light: #e9f0ff;
+  }
+
+  body {
+    background: linear-gradient(135deg,#0f172a,#111827,#0a0f1c);
+    font-family: 'Segoe UI', sans-serif;
+    color: var(--text-light);
+  }
+
+  .sa-wrap {
+    max-width: 700px;
+    margin: 3rem auto;
+    padding: 1rem;
+  }
+
+  .panel {
+    background: var(--glass);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 45px rgba(0,0,0,0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .panel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 65px rgba(0,0,0,0.55);
+  }
+
+  h2 {
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: "text";
+    -webkit-text-fill-color: transparent;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--glass2);
+    color: #fff;
+    font-size: 1rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  input:focus {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 12px rgba(6,182,212,0.3);
+    outline: none;
+  }
+
+  button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(140deg,var(--accent),var(--accent2));
+    box-shadow: 0 0 15px rgba(6,182,212,0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(6,182,212,0.4);
+  }
+
+  @media(max-width:500px) {
+    .sa-wrap { margin: 2rem 1rem; padding: 0.5rem; }
+    .panel { padding: 1.5rem; }
+    h2 { font-size: 1.4rem; }
+    input, button { font-size: 0.95rem; padding: 0.6rem 0.9rem; }
+  }
+
+  /* Developer button styles moved to shared partial (partials/dev_button.ejs) */
+</style>
+
+<div class="sa-wrap">
+  <div class="panel">
+    <h2>Edit Admin</h2>
+    <form action="/superadmin/manage-admin/edit/<%= admin._id %>" method="POST">
+      <input type="email" name="email" value="<%= admin.email %>" placeholder="Admin Email" required />
+      <input type="password" name="password" placeholder="New password (leave blank to keep current)" />
+      <button type="submit">Update Admin</button>
+    </form>
+  </div>
+</div>

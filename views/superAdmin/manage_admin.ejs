@@ -1,0 +1,306 @@
+<%- include('./superAdmin_header.ejs') %>
+
+
+<title>manage-admin</title>
+
+<style>
+  :root {
+    --accent: #06b6d4;
+    --accent2: #7c3aed;
+    --danger: #ff5f5f;
+    --muted: #9aa8b2;
+    --glass: rgba(255,255,255,0.06);
+    --glass2: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.12);
+    --text-light: #e9f0ff;
+  }
+
+  body {
+    background: linear-gradient(135deg,#0f172a,#111827,#0a0f1c);
+    background-attachment: fixed;
+  }
+
+  /* Container */
+  .sa-wrap {
+    max-width: 1200px;
+    margin: 2.5rem auto;
+    padding: 1rem;
+    animation: fadeIn .6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity:0; transform:translateY(18px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* Panel */
+  .panel {
+    background: var(--glass);
+    padding: 2rem;
+    border-radius: 18px;
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 45px rgba(0,0,0,0.4);
+  }
+
+  .panel h2 {
+    font-size: 1.7rem;
+    margin-bottom: 1.3rem;
+    font-weight: 800;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: "text";
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Form Row */
+  .form-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  input, button {
+    padding: .75rem 1rem;
+    background: var(--glass2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: white;
+    transition: .25s ease;
+  }
+
+  input:focus {
+    border-color: var(--accent);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 10px rgba(6,182,212,.3);
+    outline: none;
+  }
+
+  button {
+    background: linear-gradient(140deg,var(--accent),var(--accent2));
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    padding: .75rem 1.4rem;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(6,182,212,.25);
+    transition: .28s ease;
+  }
+
+  button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(6,182,212,.4);
+  }
+
+  /* Search bar */
+  .search-box {
+    width: 100%;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .search-box input {
+    width: 100%;
+    padding: .85rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.06);
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    background: var(--glass2);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    border-collapse: collapse;
+  }
+
+  th {
+    padding: 1rem;
+    background: rgba(255,255,255,0.08);
+    color: var(--text-light);
+    font-weight: 700;
+  }
+
+  td {
+    padding: .9rem 1rem;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    transition: .25s ease;
+  }
+
+  tr:hover td {
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+  }
+
+  /* Action buttons */
+  .action-btn {
+    background: #1f2937;
+    color: #fff;
+    padding: .55rem .9rem;
+    border-radius: 10px;
+    text-decoration:none;
+    font-size:.9rem;
+  }
+  .action-btn:hover { background:#334155; }
+
+  .delete-btn {
+    background: var(--danger);
+    color: #fff;
+    padding: .55rem .9rem;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  .delete-btn:hover { background:#ff3c3c; }
+
+  /* Modal */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    display:none;
+    background: rgba(5,10,20,0.85);
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+  }
+
+  .modal-box {
+    background: rgba(20,28,43,0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    width: 350px;
+    text-align: center;
+    border: 1px solid var(--border);
+  }
+
+  .modal-actions {
+    margin-top: 1.2rem;
+    display:flex;
+    gap:1rem;
+  }
+
+  .modal-btn {
+    flex:1;
+    padding:.75rem;
+    border-radius:10px;
+    border:none;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  .modal-btn.confirm { background:var(--danger); color:white; }
+  .modal-btn.cancel { background:#1e2734; color:var(--muted); }
+
+</style>
+
+<div class="sa-wrap">
+
+  <% if (typeof message !== 'undefined' && message) { %>
+    <div style="
+      background:rgba(6,182,212,0.15);
+      padding:1rem;
+      border-radius:12px;
+      color:#06b6d4;
+      text-align:center;
+      font-weight:700;
+      margin-bottom:1.2rem;">
+      <%= message %>
+    </div>
+  <% } %>
+
+  <div class="panel">
+    
+    <h2>Manage Admins</h2>
+
+    <!-- CREATE ADMIN FORM -->
+    <form action="/superadmin/manage-admin" method="POST">
+      <div class="form-row">
+        <input type="email" name="email" placeholder="admin@company.com" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Create Admin</button>
+      </div>
+    </form>
+
+    <!-- Delete Modal -->
+    <div id="delete-modal" class="modal-backdrop">
+      <div class="modal-box">
+        <h3>Delete Admin?</h3>
+        <p style="color:var(--muted); margin-top:.4rem;">This action cannot be undone.</p>
+        <div class="modal-actions">
+          <button class="modal-btn confirm" id="modal-confirm-btn">Delete</button>
+          <button class="modal-btn cancel" id="modal-cancel-btn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMIN LIST -->
+    <div class="list">
+      <h3 style="color:white;">Existing Admins</h3>
+
+      <table id="admins-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Created</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (admins && admins.length) { %>
+            <% admins.forEach(a => { %>
+              <tr>
+                <td class="admin-email"><%= a.email %></td>
+                <td><%= new Date(a.createdAt).toLocaleString() %></td>
+                <td>
+                  <a class="action-btn" href="/superadmin/manage-admin/edit/<%= a._id %>">Edit</a>
+
+                  <form action="/superadmin/manage-admin/delete" method="POST" class="delete-admin-form" style="display:inline;">
+                    <input type="hidden" name="id" value="<%= a._id %>" />
+                    <button type="button" class="delete-btn">Delete</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          <% } else { %>
+            <tr><td colspan="3" style="color:var(--muted); text-align:center;">No admins yet</td></tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Modal Logic
+  let modal = document.getElementById("delete-modal");
+  let formToDelete = null;
+
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      formToDelete = btn.closest("form");
+      modal.style.display = "flex";
+    });
+  });
+
+  document.getElementById("modal-confirm-btn").onclick = () => {
+    if (formToDelete) formToDelete.submit();
+    modal.style.display = "none";
+  };
+
+  document.getElementById("modal-cancel-btn").onclick = () => {
+    modal.style.display = "none";
+  };
+
+  // Search filter
+  document.getElementById("adminSearch").addEventListener("input", function() {
+    let term = this.value.toLowerCase();
+    document.querySelectorAll("#admins-table tbody tr").forEach(row => {
+      let email = row.querySelector(".admin-email").textContent.toLowerCase();
+      row.style.display = email.includes(term) ? "" : "none";
+    });
+  });
+</script>

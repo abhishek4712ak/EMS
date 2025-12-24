@@ -1,0 +1,38 @@
+<style>
+/* Shared developer floating button styles (used across pages) */
+.dev-float, .contact-dev-btn, .dev-btn {
+  position: fixed;
+  bottom: clamp(16px, 4vw, 30px);
+  right: clamp(16px, 4vw, 30px);
+  width: clamp(56px, 8vw, 80px);
+  height: clamp(56px, 8vw, 80px);
+  background: linear-gradient(135deg, #9d4edd, #ff006e);
+  border: 2px solid #c084fc;
+  border-radius: 50%;
+  color: white;
+  font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 12px 40px rgba(157,78,221,0.45);
+  transition: all 0.28s ease;
+  z-index: 1000;
+  text-decoration: none;
+}
+.dev-float:hover, .contact-dev-btn:hover, .dev-btn:hover {
+  transform: scale(1.15) rotate(6deg);
+  box-shadow: 0 0 80px rgba(255, 0, 110, 0.9);
+}
+@media (max-width: 480px) {
+  .dev-float, .contact-dev-btn, .dev-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    bottom: 12px;
+    right: 12px;
+  }
+}
+</style>
+
+<a href="/developer" class="dev-float contact-dev-btn dev-btn" title="Contact Developer" aria-label="Contact Developer">
+  <i class="fas fa-code"></i>
+</a>

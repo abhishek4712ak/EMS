@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/04fd96b6f4.js" crossorigin="anonymous"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      min-height: 100vh;
+      background: #000814;
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Neon Blobs for Depth */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(140px);
+      opacity: 0.4;
+      animation: float 28s infinite ease-in-out;
+    }
+    .blob1 { width: 900px; height: 900px; background: #00d9ff; top: -400px; left: -400px; }
+    .blob2 { width: 1100px; height: 1100px; background: #9d4edd; bottom: -500px; right: -500px; animation-delay: 14s; }
+    .blob3 { width: 700px; height: 700px; background: #ff006e; top: 50%; left: 50%; transform: translate(-50%, -50%); animation-delay: 7s; opacity: 0.3; }
+
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(120px, -100px) rotate(12deg); }
+      50% { transform: translate(-80px, 120px) rotate(-8deg); }
+      75% { transform: translate(100px, 80px) rotate(18deg); }
+    }
+
+    /* Particle Sparkles */
+    .particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .particle {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: sparkle linear infinite;
+    }
+    @keyframes sparkle {
+      0% { opacity: 0; transform: scale(0); }
+      50% { opacity: 0.7; }
+      100% { opacity: 0; transform: scale(1.4); }
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      text-align: center;
+      z-index: 2;
+      position: relative;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 7vw, 4.5rem);
+      font-weight: 900;
+      background: linear-gradient(90deg, #00d9ff, #9d4edd, #ff006e, #eab308);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: clamp(3rem, 8vw, 5rem);
+      letter-spacing: 3px;
+      text-shadow: 0 0 30px rgba(0, 217, 255, 0.6);
+      animation: appear 2s ease-out;
+    }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Fixed 2x2 Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: clamp(2rem, 5vw, 3.5rem);
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      aspect-ratio: 1 / 1; /* Keeps it perfectly square on large screens */
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(50px);
+      -webkit-backdrop-filter: blur(50px);
+      border-radius: 32px;
+      border: 2px solid rgba(157, 78, 221, 0.4);
+      padding: clamp(2rem, 5vw, 3rem);
+      color: #e2e8f0;
+      text-decoration: none;
+      transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 6px;
+      background: linear-gradient(90deg, transparent, currentColor, transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .card:hover {
+      transform: translateY(-20px) scale(1.08);
+      background: rgba(157, 78, 221, 0.25);
+      border-color: currentColor;
+      box-shadow: 0 30px 80px rgba(157, 78, 221, 0.6), 0 0 100px rgba(currentColor, 0.8);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .icon {
+      font-size: clamp(4.5rem, 12vw, 7rem);
+      margin-bottom: 1.8rem;
+      display: block;
+      text-shadow: 0 0 40px currentColor;
+      transition: all 0.6s ease;
+    }
+
+    .card:hover .icon {
+      transform: scale(1.25) rotate(12deg);
+      text-shadow: 0 0 70px currentColor;
+    }
+
+    .title {
+      font-size: clamp(1.6rem, 5vw, 2.4rem);
+      font-weight: 900;
+      margin-bottom: 0.8rem;
+      letter-spacing: 1.5px;
+    }
+
+    .desc {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      opacity: 0.85;
+    }
+
+    /* Individual Card Colors */
+    .superadmin { color: #eab308; } /* Gold */
+    .superjc   { color: #ef4444; } /* Red */
+    .jc        { color: #22c55e; } /* Green */
+    .admin     { color: #06b6d4; } /* Cyan */
+
+    /* Developer button styles moved to shared partial (partials/dev_button.ejs) */
+
+    @keyframes pulseBtn {
+      0%, 100% { box-shadow: 0 15px 50px rgba(255, 0, 110, 0.8); }
+      50% { box-shadow: 0 15px 70px rgba(255, 0, 110, 1); }
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: clamp(1.5rem, 4vw, 2.5rem);
+        aspect-ratio: auto;
+        max-width: 700px;
+      }
+      .blob { filter: blur(100px); opacity: 0.35; }
+    }
+
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, auto);
+        gap: 2rem;
+      }
+      .card {
+        padding: 2.5rem 2rem;
+      }
+      h1 {
+        margin-bottom: 3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="particles" id="particles"></div>
+
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+
+  <div class="container">
+    <h1>Select Panel to Login</h1>
+
+    <div class="grid">
+      <a href="/superadmin/login" class="card superadmin">
+        <i class="fas fa-user-shield icon"></i>
+        <div class="title">SuperAdmin</div>
+        <div class="desc">Ultimate access control</div>
+      </a>
+
+      <a href="/superjc/login" class="card superjc">
+        <i class="fas fa-user-secret icon"></i>
+        <div class="title">SuperJC</div>
+        <div class="desc">Advanced oversight</div>
+      </a>
+
+      <a href="/jc/login" class="card jc">
+        <i class="fas fa-user-graduate icon"></i>
+        <div class="title">JC</div>
+        <div class="desc">Junior coordinator</div>
+      </a>
+
+      <a href="/admin/login" class="card admin">
+        <i class="fas fa-user-cog icon"></i>
+        <div class="title">Admin</div>
+        <div class="desc">System management</div>
+      </a>
+    </div>
+  </div>
+
+  <%- include('./partials/dev_button.ejs') %>
+
+  <script>
+    // Generate Sparkle Particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      const size = Math.random() * 4 + 2;
+      particle.style.width = particle.style.height = size + 'px';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = Math.random() * 100 + '%';
+      particle.style.animationDelay = Math.random() * 20 + 's';
+      particle.style.animationDuration = Math.random() * 12 + 12 + 's';
+      particlesContainer.appendChild(particle);
+    }
+  </script>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</html>

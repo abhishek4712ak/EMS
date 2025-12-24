@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SuperAdmin Login</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/04fd96b6f4.js" crossorigin="anonymous"></script>
+
+    <!-- ✨ ULTRA-ENHANCED UI + ANIMATIONS CSS -->
+    <style>
+        :root {
+            --bg1: #020617;
+            --bg2: #0b1226;
+            --glass: rgba(255,255,255,0.06);
+            --border: rgba(255,255,255,0.12);
+            --accent: #0ea5e9;
+            --accent-2: #8b5cf6;
+            --muted: #94a3b8;
+            --error-bg: #3f1d1d;
+            --success-bg: #164e15;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg2) 0%, var(--bg1) 50%, #1e293b 100%);
+            color: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Enhanced background with animated particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            animation: float 25s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        /* Floating particles */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(14, 165, 233, 0.5), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(139, 92, 246, 0.5), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(14, 165, 233, 0.3), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(139, 92, 246, 0.3), transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: particles 30s linear infinite;
+            z-index: -1;
+            opacity: 0.6;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+            50% { transform: translateY(-30px) rotate(180deg); opacity: 1; }
+        }
+
+        @keyframes particles {
+            from { transform: translateY(0px); }
+            to { transform: translateY(-100px); }
+        }
+
+        /* PAGE WRAP - Now centered single card */
+        .login-wrap {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* LOGIN CARD - Enhanced */
+        .card {
+            background: rgba(15, 23, 36, 0.9);
+            padding: 3.2rem 2.5rem;
+            border-radius: 28px;
+            border: 1px solid rgba(255,255,255,0.06);
+            backdrop-filter: blur(25px);
+            box-shadow: 
+                0 35px 80px rgba(0,0,0,0.8),
+                inset 0 1px 0 rgba(255,255,255,0.1);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:focus-within::before,
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 
+                0 45px 100px rgba(0,0,0,0.9),
+                inset 0 1px 0 rgba(255,255,255,0.15);
+            border-color: rgba(14, 165, 233, 0.3);
+        }
+
+        /* Shake on error */
+        .card.error-shake { 
+            animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97); 
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0) translateY(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-12px) translateY(0); }
+            20%, 40%, 60%, 80% { transform: translateX(12px) translateY(0); }
+        }
+
+        .card h2 {
+            font-size: 2rem;
+            margin-bottom: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            letter-spacing: -0.02em;
+        }
+
+        /* INPUT GROUP - Refined */
+        .form-group {
+            position: relative;
+            margin-bottom: 2.2rem;
+        }
+
+        input {
+            width: 100%;
+            padding: 1.4rem 1.6rem 1.4rem 1.6rem;
+            border: 2px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.04);
+            border-radius: 20px;
+            color: #fff;
+            font-size: 1.05rem;
+            outline: none;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+            transform: translateY(-3px);
+        }
+
+        input::placeholder {
+            color: transparent;
+        }
+
+        /* Floating label (enhanced) */
+        label {
+            position: absolute;
+            top: 50%;
+            left: 1.6rem;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--muted);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            font-weight: 500;
+            z-index: 1;
+        }
+
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -12px;
+            left: 1.4rem;
+            font-size: 0.85rem;
+            background: linear-gradient(135deg, var(--bg2), rgba(11, 18, 38, 0.8));
+            padding: 0 10px;
+            border-radius: 10px;
+            color: var(--accent);
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        /* PASSWORD TOGGLE - Polished */
+        .toggle-pass {
+            position: absolute;
+            right: 1.6rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.3rem;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            z-index: 1;
+        }
+
+        .toggle-pass:hover { 
+            color: var(--accent); 
+            transform: translateY(-50%) scale(1.15) rotate(10deg);
+        }
+
+        /* BUTTON - Premium Feel */
+        .btn {
+            width: 100%;
+            padding: 1.4rem;
+            border-radius: 20px;
+            border: none;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #f0f9ff;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+            overflow: hidden;
+            margin-top: 0.8rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 0.95rem;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(14,165,233,0.5);
+        }
+
+        /* Loading Spinner - Smoother */
+        .btn.loading {
+            pointer-events: none;
+            opacity: 0.95;
+        }
+
+        .btn.loading::after {
+            content: "";
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            position: absolute;
+            top: calc(50% - 13px);
+            right: calc(50% - 13px);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* ERROR BOX - Styled */
+        .error {
+            background: linear-gradient(135deg, var(--error-bg), rgba(63, 29, 29, 0.8));
+            padding: 1.2rem 1.4rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255,0,0,0.4);
+            color: #ffcdcd;
+            margin-bottom: 1.8rem;
+            font-size: 0.98rem;
+            animation: fadeInSlide 0.6s ease;
+            box-shadow: 0 4px 15px rgba(63, 29, 29, 0.4);
+        }
+
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* RESPONSIVE - Fully Optimized */
+        @media (max-width: 768px) {
+            body { padding: 0.8rem; }
+            .login-wrap { max-width: 400px; }
+            .card {
+                padding: 2.5rem 2rem;
+            }
+            .card h2 { font-size: 1.8rem; margin-bottom: 2rem; }
+            input { padding: 1.2rem 1.4rem; font-size: 1rem; }
+            .btn { padding: 1.2rem; font-size: 1rem; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 0.5rem; }
+            .login-wrap { max-width: 350px; }
+            .card {
+                padding: 2.2rem 1.8rem;
+                border-radius: 24px;
+            }
+            .card h2 { font-size: 1.6rem; margin-bottom: 1.8rem; }
+            .form-group { margin-bottom: 1.8rem; }
+            input { padding: 1rem 1.2rem; font-size: 0.95rem; border-radius: 16px; }
+            label { left: 1.2rem; }
+            input:focus + label,
+            input:not(:placeholder-shown) + label { left: 1rem; }
+            .toggle-pass { right: 1.2rem; font-size: 1.2rem; }
+            .btn { 
+                padding: 1rem; 
+                font-size: 0.95rem;
+                border-radius: 16px;
+            }
+            .error { padding: 1rem 1.2rem; font-size: 0.92rem; }
+        }
+
+        @media (max-width: 320px) {
+            .login-wrap { max-width: 300px; }
+            .card { padding: 2rem 1.5rem; }
+            .card h2 { font-size: 1.4rem; }
+        }
+
+        /* Developer button styles moved to shared partial (partials/dev_button.ejs) */
+            .back {
+      position: fixed;
+      top: clamp(16px, 4vw, 32px);
+      left: clamp(16px, 4vw, 32px);
+      color: #c0ffee;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      padding: clamp(0.8rem, 2vw, 1rem) clamp(1.2rem, 3vw, 1.8rem);
+      background: rgba(10, 15, 30, 0.8);
+      border-radius: 50px;
+      border: 1px solid rgba(0, 217, 255, 0.5);
+      transition: all 0.4s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back:hover {
+      background: rgba(157, 78, 221, 0.7);
+      transform: translateX(-8px) scale(1.05);
+    }
+
+
+
+        /* hover handled in shared partial */
+    </style>
+</head>
+
+<body>
+      <a href="javascript:history.back()" class="back" title="Go Back">
+    <i class="fas fa-arrow-left"></i> Back
+  </a>
+    <main class="login-wrap">
+        <!-- LOGIN CARD ONLY -->
+        <aside class="card<%= (typeof error !== 'undefined' && error) ? ' error-shake' : '' %>" id="card">
+            <h2>SuperAdmin Login</h2>
+
+            <% if (error && error.length > 0) { %>
+            <div class="error"><%= error %></div>
+            <% } %>
+
+            <form action="/superadmin/login" method="POST">
+                <!-- Email -->
+                <div class="form-group">
+                    <input id="email" name="email" type="email" required placeholder=" " />
+                    <label for="email">Email Address</label>
+                </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <input id="password" name="password" type="password" required placeholder=" " />
+                    <label for="password">Password</label>
+                </div>
+
+                <button class="btn" type="submit">
+                    <i class="fas fa-sign-in-alt"></i> Sign In Securely
+                </button>
+            </form>
+        </aside>
+    </main>
+
+    <!-- ⭐ PREMIUM LOGIN JS -->
+    <script>
+        // Password Toggle Button
+        const passwordField = document.getElementById("password");
+        const passParent = passwordField.parentNode;
+        const eye = document.createElement("i");
+        eye.className = "fas fa-eye toggle-pass";
+        passParent.appendChild(eye);
+
+        eye.addEventListener("click", () => {
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eye.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                eye.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        });
+
+        // Loading Button Animation
+        const form = document.querySelector("form");
+        const btn = document.querySelector(".btn");
+        const originalBtnText = btn.innerHTML;
+
+        form.addEventListener("submit", () => {
+            btn.classList.add("loading");
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Signing In...';
+        });
+
+        // Enhanced focus animations
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.parentElement.style.transform = 'scale(1.02)';
+            });
+            input.addEventListener('blur', () => {
+                input.parentElement.style.transform = 'scale(1)';
+            });
+        });
+
+        // Auto-remove shake class
+        const card = document.getElementById("card");
+        if (card.classList.contains('error-shake')) {
+            setTimeout(() => {
+                card.classList.remove('error-shake');
+            }, 600);
+        }
+
+        // Subtle card glow on load
+        setTimeout(() => {
+            card.style.boxShadow = '0 35px 80px rgba(0,0,0,0.8), 0 0 30px rgba(14, 165, 233, 0.1)';
+        }, 500);
+    </script>
+
+    <%- include('../partials/dev_button.ejs') %>
+</body>
+</html>

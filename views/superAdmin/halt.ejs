@@ -1,0 +1,237 @@
+<%- include('./superAdmin_header.ejs') %>
+
+
+<title>Halt</title>
+
+<style>
+  :root {
+    --accent: #06b6d4;
+    --accent2: #7c3aed;
+    --danger: #ff6b6b;
+    --success: #22c55e;
+    --muted: #9aa8b2;
+    --glass: rgba(255,255,255,0.06);
+    --glass2: rgba(255,255,255,0.03);
+    --border: rgba(255,255,255,0.12);
+    --text-light: #e9f0ff;
+  }
+
+  body {
+    background: linear-gradient(135deg,#0f172a,#111827,#0a0f1c);
+    background-attachment: fixed;
+  }
+
+  /* Container */
+  .sa-wrap {
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 1rem;
+    animation: fadeIn .6s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity:0; transform:translateY(18px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+
+  /* Panel */
+  .panel {
+    background: var(--glass);
+    padding: 2rem;
+    border-radius: 18px;
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    box-shadow: 0 0 45px rgba(0,0,0,0.4);
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+
+  .panel:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 65px rgba(0,0,0,0.55);
+  }
+
+  /* Panel title */
+  .panel h2 {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 1.8rem;
+    background: linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: "text";
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Messages */
+  #event-message {
+    background: rgba(6,182,212,0.15);
+    color: var(--accent);
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--glass2);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+  }
+
+  th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    color: var(--text-light);
+    transition: background .25s ease, color .25s ease;
+  }
+
+  th {
+    background: rgba(255,255,255,0.1);
+    font-weight: 700;
+  }
+
+  tr:hover td {
+    background: rgba(255,255,255,0.07);
+    color: #fff;
+  }
+
+  /* Status labels */
+  .status-label {
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    font-size: 0.9rem;
+    transition: background .3s ease, color .3s ease;
+  }
+
+  .status-label.halted {
+    color: #fff;
+    background: var(--danger);
+  }
+
+  .status-label.active {
+    color: #fff;
+    background: var(--success);
+  }
+
+  /* Buttons */
+  .toggle-btn {
+    padding: .6rem 1.2rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+
+  .toggle-btn.halt {
+    background: var(--danger);
+    color: #fff;
+  }
+
+  .toggle-btn.halt:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px var(--danger);
+  }
+
+  .toggle-btn.resume {
+    background: var(--success);
+    color: #fff;
+  }
+
+  .toggle-btn.resume:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0 10px var(--success);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .panel { padding: 1.5rem; }
+    th, td { padding: .7rem; font-size: 0.9rem; }
+  }
+
+  @media (max-width: 600px) {
+    table, thead, tbody, th, td, tr { display: block; }
+    thead tr { display: none; }
+    tr { margin-bottom: 1rem; background: rgba(255,255,255,0.05); border-radius: 12px; padding: 0.8rem; }
+    td {
+      display: flex;
+      justify-content: space-between;
+      padding: .6rem;
+      border-bottom: 0;
+    }
+    td::before {
+      content: attr(data-label);
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .toggle-btn { width: 100%; margin-top: .6rem; }
+  }
+</style>
+
+<div class="sa-wrap">
+  <div class="panel">
+    <h2>Per-Event Halt/Resume</h2>
+
+    <% if (typeof message !== 'undefined' && message) { %>
+      <div id="event-message"><%= message %></div>
+      <script>
+        if (window.history.replaceState) {
+          const url = new URL(window.location);
+          url.searchParams.delete('message');
+          window.history.replaceState({}, document.title, url.pathname + url.search);
+        }
+      </script>
+    <% } %>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Venue</th>
+          <th>Time</th>
+          <th>Limit</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (events && events.length) { %>
+          <% events.forEach(ev => { %>
+            <tr>
+              <td data-label="Name"><%= ev.event %></td>
+              <td data-label="Type"><%= ev.type %></td>
+              <td data-label="Venue"><%= ev.venue %></td>
+              <td data-label="Time"><%= ev.time %></td>
+              <td data-label="Limit"><%= typeof ev.limit !== 'undefined' ? ev.limit : '-' %></td>
+              <td data-label="Status">
+                <span class="status-label <%= ev.halt ? 'halted' : 'active' %>">
+                  <%= ev.halt ? 'Halted' : 'Active' %>
+                </span>
+              </td>
+              <td data-label="Action">
+                <form action="/superadmin/halt/toggle/<%= ev._id %>" method="POST">
+                  <button type="submit" class="toggle-btn <%= ev.halt ? 'resume' : 'halt' %>">
+                    <%= ev.halt ? 'Resume' : 'Halt' %>
+                  </button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="7" style="color:var(--muted); text-align:center;">No events found</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
+</div>

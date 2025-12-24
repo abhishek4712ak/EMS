@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Student List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg, #071229 60%, #06b6d4 100%);
+      min-height: 100vh;
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 2rem auto;
+      background: rgba(7,18,41,0.85);
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(6,182,212,0.12);
+      padding: 2rem;
+      color: #e6eef6;
+    }
+    h2 {
+      color: #06b6d4;
+      margin-bottom: 1.5rem;
+    }
+    .tabs {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .tab {
+      background: #071229;
+      color: #fff;
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(6,182,212,0.15);
+      transition: background 0.2s;
+    }
+    .tab.active {
+      background: #06b6d4;
+      color: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 2rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #222c3a;
+      text-align: left;
+    }
+    th {
+      background: #071229;
+      color: #06b6d4;
+    }
+    tr:hover {
+      background: #0b1226;
+    }
+    .btn {
+      background: #06b6d4;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+    .btn.unverify {
+      background: #7c3aed;
+    }
+    @media (max-width: 700px) {
+      .container {
+        padding: 1rem;
+      }
+      table, th, td {
+        font-size: 0.95rem;
+      }
+      .tabs {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <%- include('./admin_header.ejs') %>
+  <div class="container" style="margin-top: 90px;">
+    <h2>Student List</h2>
+    <div class="tabs" style="position:sticky;top:70px;z-index:100;background:rgba(7,18,41,0.95);padding-top:1rem;">
+      <a href="/admin/students/all" class="tab <%= tab === 'all' ? 'active' : '' %>">All Registered</a>
+      <a href="/admin/students/verified" class="tab <%= tab === 'verified' ? 'active' : '' %>">Verified</a>
+      <a href="/admin/students/unverified" class="tab <%= tab === 'unverified' ? 'active' : '' %>">Unverified</a>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>PID</th>
+          <th>Reg No</th>
+          <th>College</th>
+          <th>Branch</th>
+          <th>Year</th>
+          <th>Verified</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% students.forEach(function(student) { %>
+          <tr>
+            <td><%= student.name %></td>
+            <td><%= student.email %></td>
+            <td><%= student.pid %></td>
+            <td><%= student.rollno %></td>
+            <td><%= student.college %></td>
+            <td><%= student.branch %></td>
+            <td><%= student.year%></td>
+            <td><%= student.verified ? 'Yes' : 'No' %></td>
+            <td>
+              <% if (!student.verified) { %>
+                <form method="post" action="/admin/student/verify" style="display:inline;">
+                  <input type="hidden" name="id" value="<%= student._id %>" />
+                  <button type="submit" class="btn">Verify</button>
+                </form>
+              <% } else { %>
+                <form method="post" action="/admin/student/unverify" style="display:inline;">
+                  <input type="hidden" name="id" value="<%= student._id %>" />
+                  <button type="submit" class="btn unverify">Unverify</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <% if (students.length === 0) { %>
+      <p>No students found.</p>
+    <% } %>
+  </div>
+
+</body>
+</html>
