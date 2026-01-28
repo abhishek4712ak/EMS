@@ -38,6 +38,10 @@ connectDB();
 app.use("/superadmin", superAdmin);
 app.use("/admin", Admin);
 
+app.use("/notfound",(req,res)=>{
+  res.render("not_found");
+});
+
 app.get("/developer", (req, res) => { 
   res.render("developer/dev");
 });
