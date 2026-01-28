@@ -57,9 +57,9 @@ superAdmin.get("/logout", (req, res) => {
 // Protected: dashboard
 superAdmin.get("/dashboard", verifySuperAdmin, async (req, res) => {
   try {
-    const usersCount = await User.countDocuments();
     const adminsCount = await User.countDocuments({ role: "admin" });
     const superJcCount = await User.countDocuments({ role: "superjc" });
+    const userCount = superJcCount + adminsCount;
     const eventsCount = await Event.countDocuments();
     const activities = []; // placeholder
     return res.render("superAdmin/superAdmin_dashboard", {
